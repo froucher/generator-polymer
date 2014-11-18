@@ -1,0 +1,14 @@
+link(rel='import', href='../../../bower_components/polymer/polymer.html')
+
+polymer-element(name='<%= elementName %>')
+  template
+  	<% if (!externalStyle) { %>
+  	style
+      :host {
+        display: block;
+      }
+    <% } else { %>
+      link(rel='stylesheet', href='<%= elementName %>.css')
+    <% } %>      
+    h1 This is <%= elementName %> element
+  script(src="<%= elementName %>.js")

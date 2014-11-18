@@ -34,6 +34,10 @@ module.exports = yeoman.generators.Base.extend({
         message: 'Would you like to include paper-elements?',
         type: 'confirm'
       }, {
+        name: 'includeJade',
+        message: 'Would you like to use Jade for html element?',
+        type: 'confirm'
+      }, {
         name: 'includeSass',
         message: 'Would you like to use SASS/SCSS for element styles?',
         type: 'confirm'
@@ -54,6 +58,7 @@ module.exports = yeoman.generators.Base.extend({
       this.includeSass = answers.includeSass;
       this.includeLibSass = answers.includeLibSass;
       this.includeRubySass = !answers.includeLibSass;
+      this.includeJaade = answers.includeJade;
 
       // Save user configuration options to .yo-rc.json file
       this.config.set({
@@ -86,16 +91,24 @@ module.exports = yeoman.generators.Base.extend({
                          'app/styles/main.css');
     this.copy('app/app.js', 'app/scripts/app.js');
     this.copy('app/htaccess', 'app/.htaccess');
-    this.copy('app/elements.html', 'app/elements/elements.html');
-    this.copy('app/yo-list.html', 'app/elements/yo-list/yo-list.html');
+    this.copy('app/elements.html', 
+      this.includeJade ? 'app/elements/elements.jade':
+                         'app/elements/elements.html');
+    this.copy('app/yo-list.html', 
+      this.includeJade ? 'app/elements/yo-list/yo-list.jade':
+                         'app/elements/yo-list/yo-list.html');
     this.copy('app/yo-list.css',
       this.includeSass ? 'app/elements/yo-list/yo-list.scss':
                          'app/elements/yo-list/yo-list.css');
-    this.copy('app/yo-greeting.html', 'app/elements/yo-greeting/yo-greeting.html');
+    this.copy('app/yo-greeting.html', 
+      this.includeJade ? 'app/elements/yo-greeting/yo-greeting.jade':
+                         'app/elements/yo-greeting/yo-greeting.html');
     this.copy('app/yo-greeting.css',
       this.includeSass ? 'app/elements/yo-greeting/yo-greeting.scss':
                          'app/elements/yo-greeting/yo-greeting.css');
-    this.copy('app/index.html', 'app/index.html');
+    this.copy('app/index.html',
+      this.includeJade ? 'app/index.jade':
+                         'app/index.html');
     this.directory('test', 'app/test');
   },
   install: function () {

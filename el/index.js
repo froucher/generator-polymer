@@ -26,10 +26,18 @@ module.exports = yeoman.generators.Base.extend({
     var includeSass = this.config.get('includeSass');
     var styleType = includeSass ? 'SCSS' : 'CSS';
 
+    var includeJade = this.config.get('includeJade');
+    var htmlType = includeJade ? 'JADE' : 'HTML';    
+
     var prompts = [
       {
         name: 'externalStyle',
         message: 'Would you like an external ' + styleType + ' file for this element?',
+        type: 'confirm'
+      },
+      {
+        name: 'externalJS',
+        message: 'Would you like an external JS file for this element?',
         type: 'confirm'
       },
       {
@@ -42,7 +50,9 @@ module.exports = yeoman.generators.Base.extend({
 
     this.prompt(prompts, function (answers) {
       this.includeSass = includeSass;
+      this.includeJade = includeJade;
       this.externalStyle = answers.externalStyle;
+      this.externalJS = answers.externalJS;
       this.includeImport = answers.includeImport;
 
       done();
@@ -55,13 +65,16 @@ module.exports = yeoman.generators.Base.extend({
     var el = path.join(this.elementName, this.elementName);
     // pathToEl = "app/elements/x-foo/x-foo"
     var pathToEl = path.join('app/elements', el);
-    this.template('_element.html', pathToEl + '.html');
     if (this.externalStyle) {
       this.template('_element.css',
         this.includeSass ? pathToEl + '.scss':
                            pathToEl + '.css');
     }
-
+    if (this.includeJade) {
+      this.template('_element.html',
+        this.includeJade ? pathToEl + '.jade':
+                           pathToEl + '.html');
+    }
     // Wire up the dependency in elements.html
     if (this.includeImport) {
       var file = this.readFileAsString('app/elements/elements.html');
