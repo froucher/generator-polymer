@@ -60,6 +60,13 @@ module.exports = function (grunt) {
           '<%%= yeoman.app %>/elements/{,*/}*.{scss,sass}'
         ],
         tasks: ['sass:server', 'autoprefixer:server']
+      }<% } %><% if (includeJade) { %>,
+      jade: {
+        files: [
+          '<%= yeoman.app %>/views/{,*/}*.jade',
+          '<%= yeoman.app %>/elements/{,*/}{,*/}*.jade'
+        ],
+        task: ['jade:server']
       }<% } %>
     },<% if (includeSass) { %>
     // Compiles Sass to CSS and generates necessary files if requested
@@ -90,6 +97,36 @@ module.exports = function (grunt) {
           src: ['styles/{,*/}*.{scss,sass}', 'elements/{,*/}*.{scss,sass}'],
           dest: '.tmp',
           ext: '.css'
+        }]
+      }
+    },<% } %><% if (includeJade) { %>
+    jade: {
+      options: {
+        pretty: true
+      },
+      dist: {
+        options: {
+          pretty: true,
+          style: 'compressed'
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: ['views/{,*/}*.jade', 'elements/{,*/}*.jade', 'elements/{,*/}{,*/}*.jade' ],
+          dest: '<%= yeoman.dist %>',
+          ext: '.html'
+        }]
+      },
+      server: {
+        options: {
+          pretty: true
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: [ 'views/{,*/}*.jade', 'elements/{,*/}*.jade', 'elements/{,*/}{,*/}*.jade' ],
+          dest: '.tmp',
+          ext: '.html'
         }]
       }
     },<% } %>
@@ -254,7 +291,8 @@ module.exports = function (grunt) {
           dest: '<%%= yeoman.dist %>',
           src: [
             '*.{ico,txt}',
-            '.htaccess',
+            '.htaccess',<% if (includeJade) { %>
+            '*.jade',<% } %>
             '*.html',
             'elements/**',<% if (includeSass) { %>
             '!elements/**/*.scss',<% } else { %>
@@ -307,7 +345,8 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',<% if (includeSass) { %>
-      'sass:server',<% } %>
+      'sass:server',<% } %><% if (includeJade) { %>
+      'jade:server',<% } %>
       'copy:styles',
       'autoprefixer:server',
       'connect:livereload',
@@ -323,7 +362,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',<% if (includeSass) { %>
-    'sass',<% } %>
+    'sass',<% } %><% if (includeSass) { %>
+    'jade',<% } %>
     'copy',
     'useminPrepare',
     'imagemin',
