@@ -5,7 +5,8 @@
   "devDependencies": {
     "grunt": "~0.4.1",<% if (includeSass) { %><% if (includeLibSass) { %>
     "grunt-sass": "~0.14.0",<% } if (includeRubySass) { %>
-    "grunt-contrib-sass": "~0.7.3",<% } %><% } %>
+    "grunt-contrib-sass": "~0.7.3",<% } %><% } %><% if (includeJade) { %>
+    "grunt-contrib-jade": "0.8.x",<% } %>
     "grunt-contrib-copy": "~0.5.0",
     "grunt-autoprefixer": "^1.0.0",
     "grunt-minify-html": "^0.1.0",
