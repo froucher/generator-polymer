@@ -58,7 +58,7 @@ module.exports = yeoman.generators.Base.extend({
       this.includeSass = answers.includeSass;
       this.includeLibSass = answers.includeLibSass;
       this.includeRubySass = !answers.includeLibSass;
-      this.includeJaade = answers.includeJade;
+      this.includeJade = answers.includeJade;
 
       // Save user configuration options to .yo-rc.json file
       this.config.set({
@@ -83,7 +83,9 @@ module.exports = yeoman.generators.Base.extend({
     this.mkdir('app/images');
     this.mkdir('app/scripts');
     this.mkdir('app/elements');
-    this.template('app/404.html');
+    this.template('app/404.html', 
+      this.includeJade ? 'app/404.jade':
+                         'app/404.html');
     this.template('app/favicon.ico');
     this.template('app/robots.txt');
     this.copy('app/main.css',
@@ -109,7 +111,19 @@ module.exports = yeoman.generators.Base.extend({
     this.copy('app/index.html',
       this.includeJade ? 'app/index.jade':
                          'app/index.html');
-    this.directory('test', 'app/test');
+    this.copy('test/index.html',
+      this.includeJade ? 'test/index.jade':
+                         'test/index.html');
+    this.copy('test/tests.html',
+      this.includeJade ? 'test/tests.jade':
+                         'test/tests.html');
+    this.copy('test/yo-greeting-basic.html',
+      this.includeJade ? 'test/yo-greeting-basic.jade':
+                         'test/yo-greeting-basic.html');
+    this.copy('test/yo-list-basic.html',
+      this.includeJade ? 'test/yo-list-basic.jade':
+                         'test/yo-list-basic.html');
+    //this.directory('test', 'app/test');
   },
   install: function () {
     this.installDependencies({
