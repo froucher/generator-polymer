@@ -17,15 +17,7 @@ module.exports = function (grunt) {
   // load all grunt tasks
   require('load-grunt-tasks')(grunt);
 
-  // configurable paths
-  var yeomanConfig = {
-    app: '',
-    dist: '',
-    tmp: ''
-  };
-
   grunt.initConfig({
-    yeoman: yeomanConfig,
     watch: {
       options: {
         nospawn: true,
@@ -36,31 +28,33 @@ module.exports = function (grunt) {
           livereload: true
         },
         files: [
-          '<%%= yeoman.app %>/*.html',
-          '{<%%= yeoman.tmp %>,<%%= yeoman.app %>}/styles/{,*/}*.css',
-          '{<%%= yeoman.tmp %>,<%%= yeoman.app %>}/scripts/{,*/}*.js',
-          '<%%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}'
+          '{,*/}*.html',
+          '{,*/}*.css',
+          '{,*/}*.js',
+          '{,*/}*.{png,jpg,jpeg,gif,webp}'
         ]
       },
       js: {
-        files: ['<%%= yeoman.app %>/scripts/{,*/}*.js'],
+        files: [
+          '{,*/}*.js'
+        ],
         tasks: ['jshint']
       },
       styles: {
         files: [
-          '<%%= yeoman.app %>/styles/{,*/}*.css',
+          '{,*/}*.css',
         ],
         tasks: ['autoprefixer:server']
       }<% if (includeSass) { %>,
       sass: {
         files: [
-          '<%%= yeoman.app %>/styles/{,*/}*.{scss,sass}',
+          '{,*/}*.{scss,sass}',
         ],
         tasks: ['sass:server', 'autoprefixer:server']
       }<% } %><% if (includeJade) { %>,
       jade: {
         files: [
-          '<%%= yeoman.app %>/{,*/}*.jade',
+          '{,*/}*.jade',
         ],
         tasks: ['jade:server']
       }<% } %>
@@ -71,27 +65,14 @@ module.exports = function (grunt) {
         sourceMap: true,
         includePaths: ['bower_components']
         <% } else { %>
-        sourcemap: true,
         loadPath: 'bower_components'
       <% } %>},
-      dist: {
-        options: {
-          style: 'compressed'
-        },
-        files: [{
-          expand: true,
-          cwd: '<%%= yeoman.app %>',
-          src: ['styles/{,*/}*.{scss,sass}'],
-          dest: '<%%= yeoman.dist %>',
-          ext: '.css'
-        }]
-      },
       server: {
         files: [{
           expand: true,
-          cwd: '<%%= yeoman.app %>',
-          src: ['styles/{,*/}*.{scss,sass}'],
-          dest: '<%%= yeoman.tmp %>',
+          cwd: '',
+          src: ['{,*/}*.{scss,sass}'],
+          dest: '',
           ext: '.css'
         }]
       }
@@ -100,58 +81,25 @@ module.exports = function (grunt) {
       options: {
         pretty: true
       },
-      dist: {
-        options: {
-          style: 'compressed'
-        },
-        files: [{
-          expand: true,
-          cwd: '<%%= yeoman.app %>',
-          src: ['views/{,*/}*.jade'],
-          dest: '<%%= yeoman.dist %>',
-          ext: '.html'
-        }]
-      },
       server: {
         files: [{
           expand: true,
-          cwd: '<%%= yeoman.app %>',
-          src: [ '{,*/}*.jade', 'views/{,*/}*.jade'],
-          dest: '<%%= yeoman.tmp %>',
+          cwd: '',
+          src: [ '{,*/}*.jade'],
+          dest: '',
           ext: '.html'
         }]
       },
       test: {
         files: [{
           expand: true,
-          cwd: '<%%= yeoman.app %>',
+          cwd: '',
           src: [ 'test/{,*/}*.jade'],
-          dest: '<%%= yeoman.tmp %>',
+          dest: '',
           ext: '.html'
         }]
       }
     },<% } %>
-    autoprefixer: {
-      options: {
-        browsers: ['last 2 versions']
-      },
-      server: {
-        files: [{
-          expand: true,
-          cwd: '<%%= yeoman.tmp %>',
-          src: '**/*.css',
-          dest: '<%%= yeoman.tmp %>'
-        }]
-      },
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%%= yeoman.dist %>',
-          src: ['**/*.css', '!bower_components/**/*.css'],
-          dest: '<%%= yeoman.dist %>'
-        }]
-      }
-    },
     connect: {
       options: {
         port: 9000,
@@ -163,8 +111,7 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               lrSnippet,
-              mountFolder(connect, '<%%= yeoman.tmp %>'),
-              mountFolder(connect, yeomanConfig.app)
+              mountFolder(connect, '..')
             ];
           }
         }
@@ -176,31 +123,22 @@ module.exports = function (grunt) {
           },
           middleware: function (connect) {
             return [
-              mountFolder(connect, yeomanConfig.app)
+              mountFolder(connect, '..')
             ];
           },
           keepalive: true
         }
       },
-      dist: {
-        options: {
-          middleware: function (connect) {
-            return [
-              mountFolder(connect, yeomanConfig.dist)
-            ];
-          }
-        }
-      }
     },
     open: {
       server: {
-        path: 'http://localhost:<%%= connect.options.port %>'
+        path: 'http://localhost:<%%= connect.options.port %>/<%= elementName %>.html'
       }
     },
     clean: {
       server: [<% if (includeJade) { %>
-        '<%%= yeoman.tmp %>/{,*/}*.html',<% } %><% if (includeSass) { %>
-        '<%%= yeoman.tmp %>/{,*/}*.css'<% } %>
+        '{,*/}*.html',<% } %><% if (includeSass) { %>
+        '{,*/}*.css'<% } %>
       ]
     },
     jshint: {
@@ -209,30 +147,10 @@ module.exports = function (grunt) {
         reporter: require('jshint-stylish')
       },
       all: [
-        '<%%= yeoman.app %>/scripts/{,*/}*.js',
-        '!<%%= yeoman.app %>/scripts/vendor/*',
+        '{,*/}*.js',
+        '!scripts/vendor/*',
         'test/spec/{,*/}*.js'
       ]
-    },
-    // See this tutorial if you'd like to run PageSpeed
-    // against localhost: http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/
-    pagespeed: {
-      options: {
-        // By default, we use the PageSpeed Insights
-        // free (no API key) tier. You can use a Google
-        // Developer API key if you have one. See
-        // http://goo.gl/RkN0vE for info
-        nokey: true
-      },
-      // Update `url` below to the public URL for your site
-      mobile: {
-        options: {
-          url: "https://developers.google.com/web/fundamentals/",
-          locale: "en_GB",
-          strategy: "mobile",
-          threshold: 80
-        }
-      }
     }
   });
 
@@ -246,7 +164,6 @@ module.exports = function (grunt) {
       'clean:server',<% if (includeSass) { %>
       'sass:server',<% } %><% if (includeJade) { %>
       'jade:server',<% } %>
-      'autoprefixer:server',
       'connect:livereload',
       'open',
       'watch'
