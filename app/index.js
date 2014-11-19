@@ -111,6 +111,7 @@ module.exports = yeoman.generators.Base.extend({
       this.copy('app/elements.jade', 'app/elements/elements.jade');
       this.copy('app/yo-list.jade', 'app/elements/yo-list/yo-list.jade');
       this.copy('app/yo-greeting.jade', 'app/elements/yo-greeting/yo-greeting.jade');
+      this.copy('app/index.jade', 'app/index.jade');
       this.copy('test/index.jade', 'test/index.jade');
       this.copy('test/tests.jade', 'test/tests.jade');
       this.copy('test/yo-greeting-basic.jade', 'test/yo-greeting-basic.jade');
