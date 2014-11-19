@@ -13,10 +13,10 @@ html
     yo-greeting
     script
       document.addEventListener('polymer-ready', function() {
-      var el = document.querySelector('yo-greeting');
-      var header = el.shadowRoot.querySelector('h1');
-      assert.equal(header.textContent, '\\'Allo, \'Allo!');
-      // IMPORTANT:
-      // Make sure to call done() at the end of every test suite!
-      done();
+        var el = document.querySelector('yo-greeting');
+        var header = el.shadowRoot.querySelector('h1');
+        assert.equal(header.textContent, '\\'Allo, \'Allo!');
+        // IMPORTANT:
+        // Make sure to call done() at the end of every test suite!
+        done();
       });

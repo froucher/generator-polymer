@@ -63,8 +63,8 @@ module.exports = function (grunt) {
       }<% } %><% if (includeJade) { %>,
       jade: {
         files: [
-          '<%= yeoman.app %>/views/{,*/}*.jade',
-          '<%= yeoman.app %>/elements/{,*/}{,*/}*.jade'
+          '<%%= yeoman.app %>/views/{,*/}*.jade',
+          '<%%= yeoman.app %>/elements/{,*/}{,*/}*.jade'
         ],
         task: ['jade:server']
       }<% } %>
@@ -106,7 +106,6 @@ module.exports = function (grunt) {
       },
       dist: {
         options: {
-          pretty: true,
           style: 'compressed'
         },
         files: [{
@@ -118,13 +117,19 @@ module.exports = function (grunt) {
         }]
       },
       server: {
-        options: {
-          pretty: true
-        },
         files: [{
           expand: true,
           cwd: '<%%= yeoman.app %>',
           src: [ 'views/{,*/}*.jade', 'elements/{,*/}*.jade', 'elements/{,*/}{,*/}*.jade' ],
+          dest: '.tmp',
+          ext: '.html'
+        }]
+      },
+      test: {
+        files: [{
+          expand: true,
+          cwd: '<%%= yeoman.app %>',
+          src: [ 'test/{,*/}*.jade'],
           dest: '.tmp',
           ext: '.html'
         }]
@@ -356,7 +361,8 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('test', [
-    'clean:server',
+    'clean:server',<% if (includeJade) { %>
+    'jade:test',<% } %>
     'connect:test'
   ]);
 
