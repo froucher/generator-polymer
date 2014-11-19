@@ -3,6 +3,7 @@ var _ = require('lodash');
 var yeoman = require('yeoman-generator');
 var path = require('path');
 var yosay = require('yosay');
+var chalk = require('chalk');
 
 module.exports = yeoman.generators.Base.extend({
   constructor: function () {
@@ -76,11 +77,31 @@ module.exports = yeoman.generators.Base.extend({
       {
         name: 'ghUser',
         message: 'What is your GitHub username?'
-      }
-    ];
+      }, {
+        name: 'includeJade',
+        message: 'Would you like to use Jade for html element?',
+        type: 'confirm'
+      }, {
+        name: 'includeSass',
+        message: 'Would you like to use SASS/SCSS for element styles?',
+        type: 'confirm'
+      }, {
+        when: function (answers) {
+          return answers.includeSass;
+        },
+        type: 'confirm',
+        name: 'includeLibSass',
+        message: 'Would you like to use libsass? Read up more at \n' +
+          chalk.green('https://github.com/andrew/node-sass#node-sass'),
+        default: false
+      }];
 
-    this.prompt(prompts, function (props) {
-      this.ghUser = props.ghUser;
+    this.prompt(prompts, function (answers) {
+      this.ghUser = answers.ghUser;
+      this.includeSass = answers.includeSass;
+      this.includeLibSass = answers.includeLibSass;
+      this.includeRubySass = !answers.includeLibSass;
+      this.includeJade = answers.includeJade;
 
       done();
     }.bind(this));
@@ -95,19 +116,32 @@ module.exports = yeoman.generators.Base.extend({
     this.template('_bower.json', 'bower.json');
     this.copy('jshintrc', '.jshintrc');
     this.copy('editorconfig', '.editorconfig');
-    this.template('_seed-element.css', this.elementName + '.css');
-    this.template('_seed-element.html', this.elementName + '.html');
-    this.template('_index.html', 'index.html');
-    this.template('_demo.html', 'demo.html');
+    this.template('Gruntfile.js');
+    this.template('_package.json', 'package.json');
+    this.template('_seed-element.css',
+      this.includeSass ? this.elementName + '.scss':
+                         this.elementName + '.css');
     this.template('_README.md', 'README.md');
-    this.template('test/index.html', 'test/index.html');
-    this.template('test/seed-element-basic.html',
-                  'test/' + this.elementName + '-basic.html');
-    this.template('test/tests.html', 'test/tests.html');
+    if(!this.includeJade) {
+      this.template('_index.html', 'index.html');
+      this.template('_demo.html', 'demo.html');
+      this.template('_seed-element.html', this.elementName + '.html');
+      this.template('test/index.html', 'test/index.html');
+      this.template('test/seed-element-basic.html',
+                    'test/' + this.elementName + '-basic.html');
+      this.template('test/tests.html', 'test/tests.html');
+    } else {
+      this.template('_index.jade', 'index.jade');
+      this.template('_demo.jade', 'demo.jade');
+      this.template('_seed-element.jade', this.elementName + '.jade');
+      this.template('test/index.jade', 'test/index.jade');
+      this.template('test/seed-element-basic.jade',
+                    'test/' + this.elementName + '-basic.jade');
+      this.template('test/tests.jade', 'test/tests.jade');
+    }
   },
   install: function () {
     this.installDependencies({
-      npm: false,
       skipInstall: this.options['skip-install'],
       skipMessage: this.options['skip-install-message'],
     });

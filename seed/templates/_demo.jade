@@ -1,0 +1,11 @@
+!!! 5
+html
+  head
+    meta(name='viewport', content='width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes')
+    title <%= elementName %> Demo
+    script(src='../platform/platform.js')
+    link(rel='import', href='<%= elementName %>.html')
+
+  body
+    p An `<%= elementName %>` looks like this:
+      <%= elementName %>></<%= elementName %>>
