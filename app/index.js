@@ -83,9 +83,6 @@ module.exports = yeoman.generators.Base.extend({
     this.mkdir('app/images');
     this.mkdir('app/scripts');
     this.mkdir('app/elements');
-    this.template('app/404.html', 
-      this.includeJade ? 'app/404.jade':
-                         'app/404.html');
     this.template('app/favicon.ico');
     this.template('app/robots.txt');
     this.copy('app/main.css',
@@ -93,36 +90,33 @@ module.exports = yeoman.generators.Base.extend({
                          'app/styles/main.css');
     this.copy('app/app.js', 'app/scripts/app.js');
     this.copy('app/htaccess', 'app/.htaccess');
-    this.copy('app/elements.html', 
-      this.includeJade ? 'app/elements/elements.jade':
-                         'app/elements/elements.html');
-    this.copy('app/yo-list.html', 
-      this.includeJade ? 'app/elements/yo-list/yo-list.jade':
-                         'app/elements/yo-list/yo-list.html');
     this.copy('app/yo-list.css',
       this.includeSass ? 'app/elements/yo-list/yo-list.scss':
                          'app/elements/yo-list/yo-list.css');
-    this.copy('app/yo-greeting.html', 
-      this.includeJade ? 'app/elements/yo-greeting/yo-greeting.jade':
-                         'app/elements/yo-greeting/yo-greeting.html');
     this.copy('app/yo-greeting.css',
       this.includeSass ? 'app/elements/yo-greeting/yo-greeting.scss':
                          'app/elements/yo-greeting/yo-greeting.css');
-    this.copy('app/index.html',
-      this.includeJade ? 'app/index.jade':
-                         'app/index.html');
-    this.copy('test/index.html',
-      this.includeJade ? 'test/index.jade':
-                         'test/index.html');
-    this.copy('test/tests.html',
-      this.includeJade ? 'test/tests.jade':
-                         'test/tests.html');
-    this.copy('test/yo-greeting-basic.html',
-      this.includeJade ? 'test/yo-greeting-basic.jade':
-                         'test/yo-greeting-basic.html');
-    this.copy('test/yo-list-basic.html',
-      this.includeJade ? 'test/yo-list-basic.jade':
-                         'test/yo-list-basic.html');
+    if(!this.includeJade) {
+      this.template('app/404.html', 'app/404.html');
+      this.copy('app/elements.html', 'app/elements/elements.html');
+      this.copy('app/yo-list.html', 'app/elements/yo-list/yo-list.html');
+      this.copy('app/yo-greeting.html', 'app/elements/yo-greeting/yo-greeting.html');
+      this.copy('app/index.html', 'app/index.html');
+      this.copy('test/index.html', 'test/index.html');
+      this.copy('test/tests.html', 'test/tests.html');
+      this.copy('test/yo-greeting-basic.html', 'test/yo-greeting-basic.html');
+      this.copy('test/yo-list-basic.html', 'test/yo-list-basic.html');
+    } else {
+      this.template('app/404.jade', 'app/404.jade');
+      this.copy('app/elements.jade', 'app/elements/elements.jade');
+      this.copy('app/yo-list.jade', 'app/elements/yo-list/yo-list.jade');
+      this.copy('app/yo-greeting.jade', 'app/elements/yo-greeting/yo-greeting.jade');
+      this.copy('test/index.jade', 'test/index.jade');
+      this.copy('test/tests.jade', 'test/tests.jade');
+      this.copy('test/yo-greeting-basic.jade', 'test/yo-greeting-basic.jade');
+      this.copy('test/yo-list-basic.jade', 'test/yo-list-basic.jade');
+    }
+
     //this.directory('test', 'app/test');
   },
   install: function () {
