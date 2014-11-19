@@ -63,6 +63,7 @@ module.exports = function (grunt) {
       }<% } %><% if (includeJade) { %>,
       jade: {
         files: [
+          '<%%= yeoman.app %>/{,*/}*.jade',
           '<%%= yeoman.app %>/views/{,*/}*.jade',
           '<%%= yeoman.app %>/elements/{,*/}{,*/}*.jade'
         ],
@@ -120,7 +121,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%%= yeoman.app %>',
-          src: [ 'views/{,*/}*.jade', 'elements/{,*/}*.jade', 'elements/{,*/}{,*/}*.jade' ],
+          src: [ '{,*/}*.jade', 'views/{,*/}*.jade', 'elements/{,*/}*.jade', 'elements/{,*/}{,*/}*.jade' ],
           dest: '.tmp',
           ext: '.html'
         }]
