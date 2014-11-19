@@ -67,7 +67,7 @@ module.exports = function (grunt) {
           '<%%= yeoman.app %>/views/{,*/}*.jade',
           '<%%= yeoman.app %>/elements/{,*/}{,*/}*.jade'
         ],
-        task: ['jade:server']
+        tasks: ['jade:server']
       }<% } %>
     },<% if (includeSass) { %>
     // Compiles Sass to CSS and generates necessary files if requested
