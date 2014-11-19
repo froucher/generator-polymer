@@ -62,7 +62,8 @@ module.exports = yeoman.generators.Base.extend({
 
       // Save user configuration options to .yo-rc.json file
       this.config.set({
-        includeSass: this.includeSass
+        includeSass: this.includeSass,
+        includeJade: this.includeJade
       });
       this.config.save();
 

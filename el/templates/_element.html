@@ -9,7 +9,7 @@
     </style><% } else { %>
     <link rel="stylesheet" href="<%= elementName %>.css"><% } %>
     <h1>This is <%= elementName %> element</h1>
-  </template><% if (!externalStyle) { %>
+  </template><% if (!externalJS) { %>
   <script>
     (function () {
 
@@ -19,5 +19,5 @@
 
     })();
   </script><% } else { %>
-  <link rel='stylesheet' href='<%= elementName %>.css'><% } %>
+  <script src='<%= elementName %>.js'><% } %>
 </polymer-element>

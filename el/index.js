@@ -1,6 +1,7 @@
 'use strict';
 var yeoman = require('yeoman-generator');
 var path = require('path');
+var chalk = require('chalk');
 
 module.exports = yeoman.generators.Base.extend({
   constructor: function () {
@@ -24,10 +25,11 @@ module.exports = yeoman.generators.Base.extend({
     var done = this.async();
 
     var includeSass = this.config.get('includeSass');
+    this.log('Project configuration read <', chalk.green('includeSass=' + includeSass), '> (see .yo-rc file)');
     var styleType = includeSass ? 'SCSS' : 'CSS';
 
     var includeJade = this.config.get('includeJade');
-    var htmlType = includeJade ? 'JADE' : 'HTML';    
+    this.log('Project configuration read <', chalk.green('includeJade=' + includeJade), '> (see .yo-rc file)');
 
     var prompts = [
       {
@@ -70,17 +72,29 @@ module.exports = yeoman.generators.Base.extend({
         this.includeSass ? pathToEl + '.scss':
                            pathToEl + '.css');
     }
-    if (this.includeJade) {
-      this.template('_element.html',
-        this.includeJade ? pathToEl + '.jade':
-                           pathToEl + '.html');
+    if (!this.includeJade) {
+      this.template('_element.html', pathToEl + '.html');
+    } else {
+      this.template('_element.jade', pathToEl + '.jade');
+    }
+    if (this.externalJS) {
+      this.template('_element.js', pathToEl + '.js');
     }
     // Wire up the dependency in elements.html
     if (this.includeImport) {
-      var file = this.readFileAsString('app/elements/elements.html');
-      el = el.replace('\\', '/');
-      file += '<link rel="import" href="' + el + '.html">\n';
-      this.writeFileFromString(file, 'app/elements/elements.html');
+      if (!this.includeJade) {
+        var file = this.readFileAsString('app/elements/elements.html');
+        el = el.replace('\\', '/');
+        file += '<link rel="import" href="' + el + '.html">\n';
+        this.writeFileFromString(file, 'app/elements/elements.html');
+        this.log('  ',chalk.green('update'),'app/elements/elements.html');
+      } else {
+        var file = this.readFileAsString('app/elements/elements.jade');
+        el = el.replace('\\', '/');
+        file += "link(rel='import', href='" + el + ".jade')\n";
+        this.writeFileFromString(file, 'app/elements/elements.jade');
+        this.log('  ',chalk.green('update'),'app/elements/elements.jade');
+      }
     }
   }
 });

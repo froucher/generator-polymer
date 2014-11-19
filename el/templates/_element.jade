@@ -11,4 +11,14 @@ polymer-element(name='<%= elementName %>')
       link(rel='stylesheet', href='<%= elementName %>.css')
     <% } %>      
     h1 This is <%= elementName %> element
+  <% if (!externalJS) { %>
+  script
+    (function () {
+      Polymer({
+        // define element prototype here
+      });
+
+    })();
+  <% } else { %>
   script(src="<%= elementName %>.js")
+  <% } %>    
