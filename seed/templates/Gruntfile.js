@@ -39,19 +39,13 @@ module.exports = function (grunt) {
           '{,*/}*.js'
         ],
         tasks: ['jshint']
-      },
-      styles: {
-        files: [
-          '{,*/}*.css',
-        ],
-        tasks: ['autoprefixer:server']
-      }<% if (includeSass) { %>,
+      },<% if (includeSass) { %>
       sass: {
         files: [
           '{,*/}*.{scss,sass}',
         ],
-        tasks: ['sass:server', 'autoprefixer:server']
-      }<% } %><% if (includeJade) { %>,
+        tasks: ['sass:server']
+      },<% } %><% if (includeJade) { %>
       jade: {
         files: [
           '{,*/}*.jade',
