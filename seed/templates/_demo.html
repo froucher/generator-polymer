@@ -14,16 +14,16 @@
   <title>seed-element Demo</title>
 
   <script src="../webcomponentsjs/webcomponents.min.js"></script>
-  <link rel="import" href="seed-element.html">
+  <link rel="import" href="<%= elementName %>.html">
 
 </head>
 <body unresolved>
 
-  <p>An example of using <code>&lt;seed-element></code>:</p>
+  <p>An example of using <code>&lt;<%= elementName %></code>:</p>
 
-  <seed-element>
-    <h2>Hello seed-element</h2>
-  </seed-element>
+  <<%= elementName %>>
+    <h2>Hello <%= elementName %></h2>
+  </<%= elementName %>>
 
 </body>
 </html>
