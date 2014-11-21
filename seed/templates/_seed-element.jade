@@ -2,12 +2,12 @@ link(rel="import", href="../polymer/polymer.html")
 
 // Element providing solution to no problem in particular.
   ##### Example
-  <bbva-element></bbva-element>
+  <<%= elementName %>></<%= elementName %>>
 
-  @element bbva-element
+  @element <%= elementName %>
   @blurb Element providing solution to no problem in particular.
   @status alpha
-  @homepage http://polymerlabs.github.io/bbva-element
+  @homepage http://polymerlabs.github.io/<%= elementName %>>
 polymer-element(name='<%= elementName %>', \attributes='notitle author')
   template
     link(rel="stylesheet", href="<%= elementName %>.css")
