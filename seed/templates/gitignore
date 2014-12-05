@@ -4,4 +4,6 @@ dist
 .tmp<% if (includeJade) { %>
 *.html
 test/*.html<% } %><% if (includeSass) { %>
-*.css<% } %>
+*.css
+*.css.map
+<% } %>
