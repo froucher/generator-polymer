@@ -1,0 +1,17 @@
+{
+  "list": [{
+      "result": {
+      "code": "ok"
+     },
+     "item": [
+      {
+        "field01": "value01",
+        "field02": "value02"
+        },
+      {
+        "field01": "value03",
+        "field02": "value04",
+       }
+     ],
+  }]
+}
